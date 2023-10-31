@@ -1,0 +1,25 @@
+SELECT DISTINCT T.nom, T.prénom
+FROM TECHNICIEN T
+INNER JOIN INTERVENTION I ON T.id = I.idTechnicien
+INNER JOIN INCIDENT INC ON I.idIncident = INC.id
+WHERE INC.idBorne = 'B1'
+ORDER BY T.nom, T.prénom;
+
+
+SELECT INT.id, INT.remarques, INC.dateHeure, INT.dateHeureDébut
+FROM INTERVENTION INT
+INNER JOIN INCIDENT INC ON INT.idIncident = INC.id
+WHERE DATEDIFF(hour, INC.dateHeure, INT.dateHeureDébut) > 24;
+
+
+SELECT COUNT(*) AS "Nb Incidents non clôturés"
+FROM INCIDENT
+WHERE dateHeureClôture IS NULL;
+
+
+SELECT ST.nom
+FROM STATION ST
+INNER JOIN BORNE BO ON ST.id = BO.idStation
+INNER JOIN INCIDENT INC ON BO.id = INC.idBorne
+GROUP BY ST.nom
+HAVING COUNT(*) > 10;
